@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Magnadroid Suite</string>
+    <string name="plot_title">Magnetic sensor plot</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_accuracy">Accuracy/sensor calibration</string>
+    <string name="action_ubik">Ubik for Android</string>
+    <string name="accuracy_info">Calibration is only necessary when your accuracy level is very low after exposure to a strong field, like a magnet.\nThe simplest and fastest way to calibrate the sensors is to gently shake it or move it through all axis.\n\nThis explanatory video will give you an example:\nhttps://www.youtube.com/watch?v=sP3d00Hr14o</string>
+    <string name="accuracy_info_title">Calibrate/recover accuracy</string>
+    <string name="accuracy_activity">Accuracy fix</string>
+    <string name="version_public">1.0.1</string>
+
+</resources>
+

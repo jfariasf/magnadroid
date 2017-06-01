@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".Magnadroid">
+
+    <item android:id="@+id/action_accuracy" android:title="@string/action_accuracy"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_ubik" android:title="@string/action_ubik"
+        android:orderInCategory="100" app:showAsAction="never" />
+</menu>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:id="@+id/skycraper"
+    android:clickable="false"
+    android:gravity="center_horizontal">
+
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/content_frame_header_tabs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+             />
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="1"
+            android:background="@android:color/white"/>
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+
+            ads:adSize="SMART_BANNER"
+            ads:adUnitId="ca-app-pub-8610982736620672/7824089211" />
+    </LinearLayout>
+
+
+
+    <com.javierarias.magnadroid.fragments.tempTabsLayout
+        android:id="@+id/venue_tabs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:background="#34000000"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
