@@ -6,7 +6,9 @@ package com.javierarias.magnadroid.fragments;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.v4.view.ViewPager;
+
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -22,8 +24,8 @@ import android.widget.TextView;
  * the user's scroll progress.
  * <p/>
  * To use the component, simply add it to your view hierarchy. Then in your
- * {@link android.app.Activity} or {@link android.support.v4.app.Fragment} call
- * {@link #setViewPager(android.support.v4.view.ViewPager)} providing it the ViewPager this layout is being used for.
+ * {@link android.app.Activity} or {@link Fragment} call
+ * {@link #setViewPager(ViewPager)} providing it the ViewPager this layout is being used for.
  * <p/>
  * The colors can be customized in two ways. The first and simplest is to provide an array of colors
  * via {@link #setSelectedIndicatorColors(int...)} and {@link #setDividerColors(int...)}. The
@@ -126,13 +128,7 @@ public class tempTabsLayout extends LinearLayout {
         mTabStrip.setDividerColors(colors);
     }
 
-    /**
-     * Set the {@link android.support.v4.view.ViewPager.OnPageChangeListener}. When using {@link TabsLayout} you are
-     * required to set any {@link android.support.v4.view.ViewPager.OnPageChangeListener} through this method. This is so
-     * that the layout can update it's scroll position correctly.
-     *
-     * @see android.support.v4.view.ViewPager#setOnPageChangeListener(android.support.v4.view.ViewPager.OnPageChangeListener)
-     */
+
     public void setOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
         mViewPagerPageChangeListener = listener;
     }
@@ -222,8 +218,8 @@ image.setImageResource(adapter.getDrawable(i));*/
                 tabView = LayoutInflater.from(getContext()).inflate(mTabViewLayoutId, mTabStrip,
                         false);
                 tabView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)); //totalWidth / tabNumber
-                tabTitleView = (TextView) tabView.findViewById(mTabViewTextViewId);
-                tabImageView = (ImageView) tabView.findViewById(mTabImageViewId);
+                tabTitleView = tabView.findViewById(mTabViewTextViewId);
+                tabImageView = tabView.findViewById(mTabImageViewId);
                 tabImageView.setImageResource(adapter.getDrawable(i));
             }
 
@@ -233,7 +229,7 @@ image.setImageResource(adapter.getDrawable(i));*/
 
             }
 
-            if (tabTitleView == null && TextView.class.isInstance(tabView)) {
+            if (tabTitleView == null && tabView instanceof TextView) {
                 tabTitleView = (TextView) tabView;
             }
 

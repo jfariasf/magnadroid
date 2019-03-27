@@ -18,17 +18,15 @@ package com.javierarias.magnadroid.fragments;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.javierarias.magnadroid.R;
 import com.javierarias.magnadroid.sys.utils;
 
@@ -40,7 +38,6 @@ public class magneTabs extends Fragment {
     private View view;
     private ArrayList<Integer> drawableTab = new ArrayList<>();
     private List<SamplePagerItem> mTabs = new ArrayList<>();
-    private AdView mAdView;
     private Activity mActivity;
 
 
@@ -56,7 +53,7 @@ public class magneTabs extends Fragment {
         }
 
         /**
-         * @return A new {@link android.support.v4.app.Fragment} to be displayed by a {@link android.support.v4.view.ViewPager}
+         * @return A new {@link Fragment} to be displayed by a {@link ViewPager}
          */
         Fragment createFragment(int fragmentPage) {
             ////Log.i("test none",""+fragmentPage);
@@ -76,7 +73,7 @@ public class magneTabs extends Fragment {
 
         /**
          * @return the title which represents this tab. In this sample this is used directly by
-         * {@link android.support.v4.view.PagerAdapter#getPageTitle(int)}
+         * {@link PagerAdapter#getPageTitle(int)}
          */
         CharSequence getTitle() {
             return mTitle;
@@ -135,14 +132,6 @@ public class magneTabs extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.magnet_viewpager, container, false);
-        mAdView = (AdView) view.findViewById(R.id.adView);
-        // Create an ad request. Check logcat output for the hashed device ID to
-        // get test ads on a physical device. e.g.
-        // "Use AdRequest.Builder.addTestDevice("ABCDEF012345") to get test ads on this device."
-        AdRequest adRequest = new AdRequest.Builder()
-
-                .build();
-        mAdView.loadAd(adRequest);
         return view;
     }
 
@@ -153,10 +142,10 @@ public class magneTabs extends Fragment {
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager mViewPager;
         tempTabsLayout mTabsLayout;
-        mViewPager = (ViewPager) view.findViewById(R.id.viewpager_tabs);
+        mViewPager = view.findViewById(R.id.viewpager_tabs);
         venue_tabs_adapter mAdapter = new venue_tabs_adapter(getChildFragmentManager());
         mViewPager.setAdapter(mAdapter);
-        mTabsLayout = (tempTabsLayout) view.findViewById(R.id.venue_tabs);
+        mTabsLayout = view.findViewById(R.id.venue_tabs);
         mTabsLayout.setTabNumber(mTabs.size());
         mTabsLayout.setCustomTabView(R.layout.magnet_tab, R.id.tabTitle, R.id.tabImage);
         mTabsLayout.setViewPager(mViewPager);

@@ -1,7 +1,6 @@
 package com.javierarias.magnadroid;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
@@ -15,9 +14,9 @@ import android.location.LocationManager;
 import android.location.Criteria;*/
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -28,9 +27,6 @@ import com.javierarias.magnadroid.events.accuracyChange;
 import com.javierarias.magnadroid.events.sensorChange;
 import com.javierarias.magnadroid.fragments.magneTabs;
 import com.javierarias.magnadroid.sys.BusProvider;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.FieldPosition;
 import java.text.Format;

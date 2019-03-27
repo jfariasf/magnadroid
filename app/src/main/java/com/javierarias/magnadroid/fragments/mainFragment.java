@@ -1,7 +1,7 @@
 package com.javierarias.magnadroid.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.widget.SeekBar;
 
 import com.javierarias.magnadroid.Magnadroid;

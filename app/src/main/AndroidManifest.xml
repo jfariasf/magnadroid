@@ -38,13 +38,11 @@
             android:launchMode="singleTop"
             android:parentActivityName="com.javierarias.magnadroid.Magnadroid" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
-            >
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.javierarias.magnadroid.Magnadroid" />
         </activity>
-        <activity android:name="com.google.android.gms.ads.AdActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>*
     </application>
 
 </manifest>
