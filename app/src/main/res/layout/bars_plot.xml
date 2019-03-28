@@ -2,33 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ff515556">
+    android:background="@drawable/tool_border"
+    android:padding="15dp">
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center_vertical|end"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Accuracy: "
-
-
-            android:textColor="#ffdedee4" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="0"
-            android:id="@+id/accuracyBar"
-
-            android:layout_marginRight="10dp"
-            android:textColor="#ffdedee4" />
-    </LinearLayout>
+        />
 
     <com.androidplot.xy.XYPlot
             android:id="@+id/aprLevelsPlot"
@@ -48,7 +29,7 @@ android:layout_weight="0.5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Scale"
+            android:text="@string/scale"
             android:id="@+id/textView18"
             android:textColor="#ffdedee4" />
 
@@ -80,7 +61,7 @@ android:layout_weight="0.5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="X Axis"
+                android:text="@string/xaxis"
                 android:id="@+id/textView13"
               
                 android:textColor="#ffdedee4"
@@ -89,7 +70,7 @@ android:layout_weight="0.5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Y Axis"
+        android:text="@string/yaxis"
         android:id="@+id/textView14"
 
         android:textColor="#ffdedee4"
@@ -99,7 +80,7 @@ android:layout_weight="0.5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Z Axis"
+        android:text="@string/zaxis"
         android:id="@+id/textView15"
      
         android:textColor="#ffdedee4"
@@ -108,7 +89,7 @@ android:layout_weight="0.5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Strength"
+                android:text="@string/strength"
                 android:id="@+id/textView16"
                 
                 
@@ -124,7 +105,7 @@ android:layout_weight="0.5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="100"
+                    android:text="@string/empty_value"
                     android:id="@+id/xAxis"
 
                     
@@ -138,7 +119,7 @@ android:layout_weight="0.5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="100"
+                android:text="@string/empty_value"
                 android:id="@+id/yAxis"
 
                 
@@ -151,7 +132,7 @@ android:layout_weight="0.5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="100"
+                android:text="@string/empty_value"
                 android:id="@+id/zAxis"
 
                 
@@ -167,7 +148,7 @@ android:layout_weight="0.5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="0"
+                android:text="@string/empty_value"
                 android:id="@+id/strengthBar"
                 
                 

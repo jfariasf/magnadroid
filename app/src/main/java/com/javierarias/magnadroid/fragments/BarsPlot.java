@@ -15,7 +15,6 @@ import com.androidplot.xy.BarRenderer;
 import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
-import com.javierarias.magnadroid.Magnadroid;
 import com.javierarias.magnadroid.R;
 
 import java.util.Locale;
@@ -45,7 +44,6 @@ public class BarsPlot extends mainFragment {
     private TextView xAxis;
     private TextView yAxis;
     private TextView zAxis;
-    private TextView accuracyText;
     private int multiplier = 1;
     private TextView strengthBar;
 
@@ -59,17 +57,15 @@ public class BarsPlot extends mainFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View plotLayout = inflater.inflate(R.layout.bars_plot, container, false);
-        seekBar = (SeekBar) plotLayout.findViewById(R.id.sensitivity);
-        strengthBar = (TextView) plotLayout.findViewById(R.id.strengthBar);
+        seekBar = plotLayout.findViewById(R.id.sensitivity);
+        strengthBar = plotLayout.findViewById(R.id.strengthBar);
         seekBar.setProgress(sliderValue);
         seekBar.setOnSeekBarChangeListener(this);
-        accuracyText = (TextView) plotLayout.findViewById(R.id.accuracyBar);
+        yAxis = plotLayout.findViewById(R.id.yAxis);
+        xAxis = plotLayout.findViewById(R.id.xAxis);
+        zAxis = plotLayout.findViewById(R.id.zAxis);
 
-        yAxis = (TextView) plotLayout.findViewById(R.id.yAxis);
-        xAxis = (TextView) plotLayout.findViewById(R.id.xAxis);
-        zAxis = (TextView) plotLayout.findViewById(R.id.zAxis);
-
-        aprLevelsPlot = (XYPlot) plotLayout.findViewById(R.id.aprLevelsPlot);
+        aprLevelsPlot = plotLayout.findViewById(R.id.aprLevelsPlot);
 
         aprLevelsSeriesX = new SimpleXYSeries(SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "X Axis");
         aprLevelsSeriesY = new SimpleXYSeries(SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Y Axis");
@@ -100,7 +96,7 @@ public class BarsPlot extends mainFragment {
         aprLevelsPlot.setRangeLabel("micro-Tesla (uT)");
         aprLevelsPlot.setPlotPadding(100, 0, 100, 0);
 
-        updateSensitivity(sliderValue);
+        calculatePlotBoundaries(sliderValue);
         aprLevelsPlot.setLayerType(View.LAYER_TYPE_NONE, null);
         BarRenderer barRenderer = aprLevelsPlot.getRenderer(BarRenderer.class);
 
@@ -112,7 +108,7 @@ public class BarsPlot extends mainFragment {
     }
 
     @Override
-    public void updateSensitivity(int progress) {
+    public void calculatePlotBoundaries(int progress) {
         sliderValue = progress;
 
         aprLevelsPlot.setRangeBoundaries(lowBoundary + progress, highBoundary - progress, BoundaryMode.FIXED);
@@ -120,14 +116,14 @@ public class BarsPlot extends mainFragment {
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        updateSensitivity(progress);
+        calculatePlotBoundaries(progress);
     }
 
 
     @Override
     public void updateSignal(Number[] sensor) {
         sensor = new Number[]{sensor[0], sensor[1], sensor[2], Math.sqrt(Math.pow(sensor[0].doubleValue(), 2) + Math.pow(sensor[1].doubleValue(), 2) + Math.pow(sensor[2].doubleValue(), 2))};
-        sensor = updateSensorValues(sensor);
+        //sensor = updateSensorValues(sensor);
         xAxis.setText(String.format(Locale.US, "%.2f", sensor[0].doubleValue()));
         yAxis.setText(String.format(Locale.US, "%.2f", sensor[1].doubleValue()));
         zAxis.setText(String.format(Locale.US, "%.2f", sensor[2].doubleValue()));
@@ -144,13 +140,4 @@ public class BarsPlot extends mainFragment {
         aprLevelsSeriesStrength.addLast(3, sensor[3]);
         aprLevelsPlot.redraw();
     }
-
-    @Override
-    public void updateAccuracy() {
-        if (accuracyText != null)
-            accuracyText.setText(String.valueOf( mActivity.accuracy));
-
-    }
-
-
 }

@@ -36,7 +36,6 @@ public class mainFragment extends Fragment implements SeekBar.OnSeekBarChangeLis
     protected int highBoundary = 10000;
     protected int sliderValue = 9900;
     protected Magnadroid mActivity;
-    protected int accuracy = 0;
 
     public static Fragment newInstance(int sortOrder) {//, CharSequence title, int indicatorColor, int dividerColor
         Bundle args;
@@ -95,7 +94,7 @@ public class mainFragment extends Fragment implements SeekBar.OnSeekBarChangeLis
         }
     }
 
-    public void updateSensitivity(int progress) {
+    public void calculatePlotBoundaries(int progress) {
 
     }
 
@@ -104,19 +103,12 @@ public class mainFragment extends Fragment implements SeekBar.OnSeekBarChangeLis
         updateSignal(sensor.series1Numbers);
     }
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onAccuracyChange(accuracyChange accuracy) {
-        updateAccuracy();
-    }
 
-    public void updateAccuracy() {
-
-    }
 
     public void updateSignal(Number[] sensor) {
 
     }
-
+/*
     public Number[] updateSensorValues(Number[] values) {
         for (int i = 0; i < values.length; i++) {
             if (values[i].floatValue() < lowBoundary + sliderValue) {
@@ -127,7 +119,7 @@ public class mainFragment extends Fragment implements SeekBar.OnSeekBarChangeLis
         }
         return values;
     }
-
+*/
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 

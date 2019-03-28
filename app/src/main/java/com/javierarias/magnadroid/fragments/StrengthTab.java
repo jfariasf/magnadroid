@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.hardware.GeomagneticField;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -48,13 +49,13 @@ import java.util.Locale;
  */
 public class StrengthTab extends mainFragment implements View.OnClickListener {
 
+    private static final int defaultStrength = 10;
     private TextView stregthText;
     private GeomagneticField geo;
     private TextView geoStrengthText;
     private TextView alertText;
     private SeekBar strengthSensitivityBar;
-    private int strengthSensitivity = 9;
-    private TextView accuracyText;
+    private int strengthSensitivity = 10;
     private double lastHighestValue;
     private TextView highestValueText;
     private EditText manualGeoValue;
@@ -75,16 +76,15 @@ public class StrengthTab extends mainFragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View plotLayout = inflater.inflate(R.layout.strength_tab, container, false);
-        stregthText = (TextView) plotLayout.findViewById(R.id.strengthText);
+        stregthText = plotLayout.findViewById(R.id.strengthText);
         mActivity = (Magnadroid) getActivity();
         //Button magneticButton = (Button) plotLayout.findViewById(R.id.magneticFieldButton);
-        Button defaultSetButton = (Button) plotLayout.findViewById(R.id.setDefaultButton);
-        Button manualSetButton = (Button) plotLayout.findViewById(R.id.setManualButton);
-        geoStrengthText = (TextView) plotLayout.findViewById(R.id.geomagneticText);
-        alertText = (TextView) plotLayout.findViewById(R.id.alertText);
-        accuracyText = (TextView) plotLayout.findViewById(R.id.accuracy);
-        manualGeoValue = (EditText) plotLayout.findViewById(R.id.editGeomagnetic);
-        aprHistoryPlot = (XYPlot) plotLayout.findViewById(R.id.strengthHistory);
+        Button defaultSetButton = plotLayout.findViewById(R.id.setDefaultButton);
+        Button manualSetButton = plotLayout.findViewById(R.id.setManualButton);
+        geoStrengthText = plotLayout.findViewById(R.id.geomagneticText);
+        alertText = plotLayout.findViewById(R.id.alertText);
+        manualGeoValue = plotLayout.findViewById(R.id.editGeomagnetic);
+        aprHistoryPlot = plotLayout.findViewById(R.id.strengthHistory);
 
         manualGeoValue.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -113,8 +113,6 @@ public class StrengthTab extends mainFragment implements View.OnClickListener {
                       /*  geoStrength = Double.parseDouble(manualGeoValue.getText().toString());
                         geoStrengthText.setText(String.valueOf(geoStrength));*/
                     InputMethodManager inputMethodManager = (InputMethodManager) mActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-                    //Find the currently focused view, so we can grab the correct window token from it.
-
                     inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
                     utils.hide_keyboard(mActivity);
                     return true;
@@ -123,7 +121,7 @@ public class StrengthTab extends mainFragment implements View.OnClickListener {
             }
         });
 
-        highestValueText = (TextView) plotLayout.findViewById(R.id.highestVal);
+        highestValueText = plotLayout.findViewById(R.id.highestVal);
         highestValueText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -139,8 +137,8 @@ public class StrengthTab extends mainFragment implements View.OnClickListener {
                 return false;
             }
         });
-        strengthSensitivityBar = (SeekBar) plotLayout.findViewById(R.id.strengthSensitivity);
-        strengthSensitivityBar.setProgress(9);
+        strengthSensitivityBar = plotLayout.findViewById(R.id.strengthSensitivity);
+        strengthSensitivityBar.setProgress(defaultStrength);
 
         strengthSensitivityBar.setOnSeekBarChangeListener(this);
 
@@ -161,7 +159,7 @@ public class StrengthTab extends mainFragment implements View.OnClickListener {
         aprHistoryPlot.setDomainStepValue(5);
         aprHistoryPlot.setRangeLabel("micro-Tesla (uT)");
         aprHistoryPlot.setLayerType(View.LAYER_TYPE_NONE, null);
-        updateSensitivity(strengthSensitivity);
+        calculatePlotBoundaries(strengthSensitivity);
         return plotLayout;
     }
 
@@ -169,15 +167,19 @@ public class StrengthTab extends mainFragment implements View.OnClickListener {
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         strengthSensitivity = progress;
-        updateSensitivity(progress);
+        calculatePlotBoundaries(progress);
     }
 
     @Override
-    public void updateSensitivity(int progress) {
-        lowBoundary = progress / 10f;
-        highBoundary = 2f - (progress / 10f);
-        highPlotBoundary = (progress == 10) ? highBoundaryPlot * 0.05f : highBoundaryPlot * (highBoundary - 1);
-        lowPlotBoundary = (progress == 10) ? lowBoundaryPlot * 0.05f : lowBoundaryPlot * (highBoundary - 1);
+    public void calculatePlotBoundaries(int progress) {
+        lowBoundary = progress / 10.5f;
+        highBoundary = 1f - lowBoundary;
+        highPlotBoundary = highBoundaryPlot * highBoundary;
+        lowPlotBoundary = lowBoundaryPlot * highBoundary;
+        updatePlotBoundaries();
+    }
+
+    private void updatePlotBoundaries() {
         aprHistoryPlot.setRangeBoundaries(lowPlotBoundary, highPlotBoundary, BoundaryMode.FIXED);
     }
 
@@ -209,18 +211,22 @@ public class StrengthTab extends mainFragment implements View.OnClickListener {
         updateSignal(sensor.series1Numbers);
     }
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onAccuracyChange(accuracyChange accuracy) {
-        updateAccuracy();
-    }
-
     @Override
     public void updateSignal(Number[] sensor) {
-        sensor = updateSensorValues(sensor);
         strength = Math.sqrt(Math.pow(sensor[0].doubleValue(), 2) + Math.pow(sensor[1].doubleValue(), 2) + Math.pow(sensor[2].doubleValue(), 2));
         geoStrengthText.setText(String.format(Locale.US, "%.2f", geoStrength));
+        lastValue = Math.abs(strength - geoStrength);
+        if (lastValue > highPlotBoundary) {
+            highPlotBoundary = (float) lastValue + 5;
+            updatePlotBoundaries();
+        }
+        else if(lastValue < lowPlotBoundary) {
+            lowPlotBoundary = (float) lastValue - 5;
+            updatePlotBoundaries();
+        }
+
         if (strength < lowBoundary * geoStrength || strength > highBoundary * geoStrength) {
-            lastValue = Math.abs(strength - geoStrength);
+
             if (lastValue > lastHighestValue) {
                 lastHighestValue = lastValue;
             }
@@ -235,25 +241,6 @@ public class StrengthTab extends mainFragment implements View.OnClickListener {
         }
         differenceHistorySeries.addLast(null, lastValue);
         aprHistoryPlot.redraw();
-    }
-
-    @Override
-    public void updateAccuracy() {
-        if (accuracyText != null)
-            accuracyText.setText(String.valueOf((mActivity).accuracy));
-
-    }
-
-    @Override
-    public Number[] updateSensorValues(Number[] values) {
-        for (int i = 0; i < values.length; i++) {
-            if (values[i].floatValue() < lowPlotBoundary) {
-                values[i] = lowPlotBoundary + 1;
-            } else if (values[i].floatValue() > highPlotBoundary) {
-                values[i] = highPlotBoundary - 1;
-            }
-        }
-        return values;
     }
 
 }

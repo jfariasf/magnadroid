@@ -3,6 +3,7 @@ package com.javierarias.magnadroid;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -58,7 +59,6 @@ public class Magnadroid extends AppCompatActivity implements SensorEventListener
 
     public float magneticMaxRange;
     public int accuracy = 0;
-
     private SensorManager mSensorManager;
     private Sensor mMagnetic;
     private boolean initialAccuracy;
@@ -77,10 +77,18 @@ public class Magnadroid extends AppCompatActivity implements SensorEventListener
             magneticMaxRange = mMagnetic.getMaximumRange();
         }
         setContentView(R.layout.activity_magnadroid);
+        try {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setIcon(R.drawable.ic_launcher);
+        }
+        catch (Exception e){
+
+        }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         magneTabs fragment = new magneTabs();
         transaction.replace(R.id.frame_content, fragment);
+
         transaction.commit();
     }
 

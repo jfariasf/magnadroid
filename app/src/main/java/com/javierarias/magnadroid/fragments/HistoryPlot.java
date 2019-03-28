@@ -46,7 +46,6 @@ public class HistoryPlot extends mainFragment {
     private SimpleXYSeries aprLevelsSeriesStrength = null;
     private EventBus bus;
     private TextView strengthBar;
-    private TextView accuracyText;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -58,11 +57,10 @@ public class HistoryPlot extends mainFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View plotLayout = inflater.inflate(R.layout.history_plot, container, false);
-        aprLevelsPlot = (XYPlot) plotLayout.findViewById(R.id.aprHistoryPlot);
+        aprLevelsPlot = plotLayout.findViewById(R.id.aprHistoryPlot);
         aprLevelsPlot.getGraph().getGridBackgroundPaint().setColor(Color.BLACK);
         aprLevelsPlot.getGraph().getDomainGridLinePaint().setAlpha(0);
         aprLevelsPlot.getGraph().getDomainOriginLinePaint().setAlpha(0);
-        accuracyText = (TextView) plotLayout.findViewById(R.id.accuracyHistory);
 
         aprLevelsSeriesX = new SimpleXYSeries("X Axis");
         aprLevelsSeriesX.useImplicitXVals();
@@ -75,13 +73,13 @@ public class HistoryPlot extends mainFragment {
         aprLevelsPlot.setRangeBoundaries(lowBoundary, highBoundary, BoundaryMode.FIXED);
         aprLevelsPlot.setDomainBoundaries(0, 30, BoundaryMode.FIXED);
 
-        seekBar = (SeekBar) plotLayout.findViewById(R.id.sensitivityHistory);
-        strengthBar = (TextView) plotLayout.findViewById(R.id.strengthHistory);
+        seekBar = plotLayout.findViewById(R.id.sensitivityHistory);
+        strengthBar = plotLayout.findViewById(R.id.strengthHistory);
 
         seekBar.setOnSeekBarChangeListener(this);
-        yAxis = (TextView) plotLayout.findViewById(R.id.yAxisHistory);
-        xAxis = (TextView) plotLayout.findViewById(R.id.xAxisHistory);
-        zAxis = (TextView) plotLayout.findViewById(R.id.zAxisHistory);
+        yAxis = plotLayout.findViewById(R.id.yAxisHistory);
+        xAxis = plotLayout.findViewById(R.id.xAxisHistory);
+        zAxis = plotLayout.findViewById(R.id.zAxisHistory);
 
         aprLevelsPlot.addSeries(aprLevelsSeriesX, new LineAndPointFormatter(Color.parseColor("#5FA9DD"), Color.TRANSPARENT, Color.TRANSPARENT, null));
         aprLevelsPlot.addSeries(aprLevelsSeriesY, new LineAndPointFormatter(Color.parseColor("#DEDC16"), Color.TRANSPARENT, Color.TRANSPARENT, null));
@@ -97,7 +95,7 @@ public class HistoryPlot extends mainFragment {
     }
 
     @Override
-    public void updateSensitivity(int progress) {
+    public void calculatePlotBoundaries(int progress) {
         sliderValue = progress;
 
         aprLevelsPlot.setRangeBoundaries(lowBoundary + progress, highBoundary - progress, BoundaryMode.FIXED);
@@ -105,13 +103,13 @@ public class HistoryPlot extends mainFragment {
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        updateSensitivity(progress);
+        calculatePlotBoundaries(progress);
     }
 
     @Override
     public void updateSignal(Number[] sensor) {
         sensor = new Number[]{sensor[0], sensor[1], sensor[2], Math.sqrt(Math.pow(sensor[0].doubleValue(), 2) + Math.pow(sensor[1].doubleValue(), 2) + Math.pow(sensor[2].doubleValue(), 2))};
-        sensor = updateSensorValues(sensor);
+        //sensor = updateSensorValues(sensor);
 
         xAxis.setText(String.format(Locale.US, "%.2f", sensor[0].doubleValue()));
         yAxis.setText(String.format(Locale.US, "%.2f", sensor[1].doubleValue()));
@@ -130,14 +128,4 @@ public class HistoryPlot extends mainFragment {
         aprLevelsSeriesStrength.addLast(3, sensor[3]);
         aprLevelsPlot.redraw();
     }
-
-    @Override
-    public void updateAccuracy() {
-        //Log.i("change history", ""+((Magnadroid) mActivity).accuracy);
-        if (accuracyText != null)
-            accuracyText.setText(String.valueOf( mActivity.accuracy));
-
-    }
-
-
 }

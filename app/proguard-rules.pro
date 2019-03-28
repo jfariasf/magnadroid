@@ -23,3 +23,7 @@
 -keepclassmembers class * extends de.greenrobot.event.util.ThrowableFailureEvent {
     <init>(java.lang.Throwable);
 }
+-ignorewarnings
+-keep class * {
+    public private *;
+}
