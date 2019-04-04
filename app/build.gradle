@@ -25,8 +25,6 @@ android {
         minSdkVersion 16
         targetSdkVersion 28
         renderscriptTargetApi 28
-
-
     }
     buildTypes {
         release {
@@ -59,11 +57,8 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
     implementation 'androidx.cardview:cardview:1.0.0-beta01'
-    implementation 'com.google.firebase:firebase-core:16.0.7'
     implementation 'org.greenrobot:eventbus:3.0.0'
     implementation "com.androidplot:androidplot-core:1.4.2"
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
 
-
-    apply plugin: 'com.google.gms.google-services'
 }
